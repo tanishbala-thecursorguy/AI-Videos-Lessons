@@ -1,4 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<meta charset="utf-8">
 <title>Slop Money</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="It's AI slop. It pays anyway. Learn the exact system we use to run faceless AI Shorts channels that earn from YouTube, brand deals and link-in-bio offers.">
@@ -193,6 +194,22 @@ section{padding-block:84px}
 .incl li{display:flex;gap:10px;font-weight:500}
 .incl li::before{content:"✓";color:var(--green);font-weight:900}
 .price-card .btn{width:100%;padding:18px;font-size:18px}
+.inr{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--mute);margin:-2px 0 4px}
+.pay{display:grid;gap:12px}
+.pay .btn{display:flex;align-items:center;justify-content:center;gap:10px}
+.pay .btn small{font-family:var(--mono);font-size:12px;font-weight:700;opacity:.75}
+.pay .btn-alt{background:var(--card);color:var(--ink)}
+.pay-note{font-size:12.5px;color:var(--mute);text-align:center;margin-top:10px}
+.co-back[hidden]{display:none!important}
+.co-back{position:fixed;inset:0;background:rgba(10,10,20,.55);display:grid;place-items:center;z-index:98;padding:16px}
+.co{background:var(--card);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--green);width:min(440px,100%);padding:26px;position:relative}
+.co h3{font-size:22px;margin:0 0 4px}.co .sub{color:var(--mute);font-size:14px;margin-bottom:16px}
+.co label{display:block;font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:6px}
+.co select{width:100%;padding:13px 12px;border:2.5px solid var(--ink);border-radius:12px;font-size:16px;font-weight:600;background:#fff;color:var(--ink);margin-bottom:16px}
+.co .btn{width:100%;padding:17px;font-size:17px;display:flex;justify-content:center;gap:10px}
+.co .x{position:absolute;top:10px;right:14px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+.co .fine{margin-top:12px}
+.toast2{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;font-size:14px;z-index:99;max-width:90vw;text-align:center}
 .fine{font-size:13px;color:var(--mute);text-align:center;margin-top:14px}
 
 /* faq */
@@ -404,8 +421,8 @@ footer .disc{max-width:860px}
             <li>Private builder community</li>
             <li>Every future update included</li>
           </ul>
-          <a class="btn btn-go js-checkout" href="#pricing">Get instant access →</a>
-          <p class="fine js-fine">One-time payment · Secure checkout by Stripe</p>
+          <a class="btn btn-go js-buy" href="#pricing">Get instant access →</a>
+          <p class="fine js-fine">One-time payment · Secure checkout · Instant access</p>
         </div>
       </div>
     </div>
@@ -444,6 +461,14 @@ footer .disc{max-width:860px}
 
 <div class="buybar"><span><span class="js-left">200</span> spots at <span class="js-now">$9</span></span><a class="btn btn-go btn-sm" href="#pricing">Get access</a></div>
 
+<div class="co-back" id="co" hidden><div class="co" role="dialog" aria-modal="true" aria-labelledby="coT">
+  <button class="x" type="button" aria-label="Close" id="coX">×</button>
+  <h3 id="coT">Checkout</h3><div class="sub">Slop Money: full course + community · <b class="js-co-price">$9</b></div>
+  <label for="coC">COUNTRY YOU'RE PAYING FROM</label>
+  <select id="coC"><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="DE">Germany</option><option value="OT">Other country</option></select>
+  <a class="btn btn-go" id="coPay" href="#pricing">Pay</a>
+  <p class="fine" id="coFine">Secure checkout · Instant access</p>
+</div></div>
 <script>
 (function(){
   var C=["var(--green)","var(--pink)","var(--hi)","var(--blue)","var(--orange)"];
@@ -458,7 +483,9 @@ footer .disc{max-width:860px}
   fill("t2",CLIPS.slice(5).concat(CLIPS.slice(0,3)),2);
   document.querySelectorAll(".phone video").forEach(function(v){var p=v.play();if(p&&p.catch)p.catch(function(){});});
 
-  var cfg={earlyBirdTotal:200,earlyBirdClaimed:0,earlyPrice:9,fullPrice:19,checkoutEarly:"",checkoutFull:""};
+  var cfg={earlyBirdTotal:200,earlyBirdClaimed:0,earlyPrice:9,fullPrice:19,earlyPriceINR:749,fullPriceINR:1599,checkoutEarly:"",checkoutFull:"",checkoutEarlyIN:"",checkoutFullIN:""};
+  var inIndia=false;try{inIndia=/Calcutta|Kolkata/.test(Intl.DateTimeFormat().resolvedOptions().timeZone)||/-IN$/i.test(navigator.language||"");}catch(e){}
+  function toast(m){var t=document.createElement("div");t.className="toast2";t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},2600);}
   function set(s,t){document.querySelectorAll(s).forEach(function(e){e.textContent=t;});}
   function apply(){
     var total=cfg.earlyBirdTotal,claimed=Math.min(cfg.earlyBirdClaimed,total),left=total-claimed,early=left>0;
@@ -469,11 +496,20 @@ footer .disc{max-width:860px}
     set(".js-ribbon",early?"EARLY BIRD":"REGULAR PRICE");
     document.querySelectorAll(".js-strike").forEach(function(e){e.hidden=!early;});
     document.querySelectorAll(".js-bar").forEach(function(b){b.style.width=Math.max(3,claimed/total*100)+"%";});
-    document.querySelectorAll(".js-checkout").forEach(function(a){
-      if(link){a.href=link;a.target="_blank";a.rel="noopener";a.removeAttribute("aria-disabled");}
-      else{a.href="#pricing";a.setAttribute("aria-disabled","true");}
-    });
-    set(".js-fine",link?"One-time payment · Secure checkout by Stripe":"Checkout opens in the next 24 hours. Bookmark this page.");
+    var inr=early?cfg.earlyPriceINR:cfg.fullPriceINR,linkIN=early?cfg.checkoutEarlyIN:cfg.checkoutFullIN;
+    var fmt=function(n){return "₹"+Number(n).toLocaleString("en-IN");};
+    var co=document.getElementById("co"),sel=document.getElementById("coC"),pay=document.getElementById("coPay"),fine=document.getElementById("coFine");
+    function upd(){var india=sel.value==="IN";
+      set(".js-co-price",india?fmt(inr):"$"+now);
+      pay.textContent=india?"Pay with UPI  "+fmt(inr):"Pay with Card / PayPal  $"+now;
+      fine.textContent=india?"UPI, RuPay and Indian cards · Secure checkout · Instant access":"Visa, Mastercard, Amex, PayPal · Secure checkout · Instant access";
+      var l=india?linkIN:link; pay.href=l||"#pricing"; if(l){pay.target="_blank";pay.rel="noopener";}else pay.removeAttribute("target");
+      pay.onclick=l?null:function(e){e.preventDefault();toast(india?"UPI checkout (Razorpay) opens here once the link is added":"Card / PayPal checkout opens here once the link is added");};}
+    if(!sel.dataset.init){sel.dataset.init=1;sel.value=inIndia?"IN":"US";sel.onchange=upd;
+      document.getElementById("coX").onclick=function(){co.hidden=true;};co.onclick=function(e){if(e.target===co)co.hidden=true;};
+      document.addEventListener("keydown",function(e){if(e.key==="Escape")co.hidden=true;});}
+    document.querySelectorAll(".js-buy").forEach(function(btn){btn.onclick=function(e){e.preventDefault();co.hidden=false;sel.focus();};});
+    upd();
   }
   apply();
   fetch("site.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){for(var k in j)cfg[k]=j[k];apply();}}).catch(function(){});
