@@ -463,7 +463,7 @@ footer .disc{max-width:860px}
 
 <div class="co-back" id="co" hidden><div class="co" role="dialog" aria-modal="true" aria-labelledby="coT">
   <button class="x" type="button" aria-label="Close" id="coX">×</button>
-  <h3 id="coT">Checkout</h3><div class="sub">Slop Money: full course + community · <b class="js-co-price">$9</b></div>
+  <h3 id="coT">Checkout</h3><div class="sub">Slop Money: full course + community</div>
   <label for="coC">COUNTRY YOU'RE PAYING FROM</label>
   <select id="coC"><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="DE">Germany</option><option value="OT">Other country</option></select>
   <a class="btn btn-go" id="coPay" href="#pricing">Pay</a>
@@ -500,8 +500,7 @@ footer .disc{max-width:860px}
     var fmt=function(n){return "₹"+Number(n).toLocaleString("en-IN");};
     var co=document.getElementById("co"),sel=document.getElementById("coC"),pay=document.getElementById("coPay"),fine=document.getElementById("coFine");
     function upd(){var india=sel.value==="IN";
-      set(".js-co-price",india?fmt(inr):"$"+now);
-      pay.textContent=india?"Pay with UPI  "+fmt(inr):"Pay with Card / PayPal  $"+now;
+      pay.textContent=india?"Pay with UPI →":"Pay with Card →";
       fine.textContent=india?"UPI, RuPay and Indian cards · Secure checkout · Instant access":"Visa, Mastercard, Amex, PayPal · Secure checkout · Instant access";
       var l=india?linkIN:link; pay.href=l||"#pricing"; if(l){pay.target="_blank";pay.rel="noopener";}else pay.removeAttribute("target");
       pay.onclick=l?null:function(e){e.preventDefault();toast(india?"UPI checkout (Razorpay) opens here once the link is added":"Card / PayPal checkout opens here once the link is added");};}
