@@ -466,7 +466,7 @@ footer .disc{max-width:860px}
   <h3 id="coT">Checkout</h3><div class="sub">Slop Money: full course + community</div>
   <label for="coC">COUNTRY YOU'RE PAYING FROM</label>
   <select id="coC"><option value="IN">India</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="AE">United Arab Emirates</option><option value="DE">Germany</option><option value="OT">Other country</option></select>
-  <a class="btn btn-go" id="coPay" href="#pricing">Pay</a>
+  <a class="btn btn-go" id="coPay" href="#pricing">Start →</a>
   <p class="fine" id="coFine">Secure checkout · Instant access</p>
 </div></div>
 <script>
@@ -500,7 +500,7 @@ footer .disc{max-width:860px}
     var fmt=function(n){return "₹"+Number(n).toLocaleString("en-IN");};
     var co=document.getElementById("co"),sel=document.getElementById("coC"),pay=document.getElementById("coPay"),fine=document.getElementById("coFine");
     function upd(){var india=sel.value==="IN";
-      pay.textContent=india?"Pay with UPI →":"Pay with Card →";
+      pay.textContent="Start →";
       fine.textContent=india?"UPI, RuPay and Indian cards · Secure checkout · Instant access":"Visa, Mastercard, Amex, PayPal · Secure checkout · Instant access";
       var l=india?linkIN:link; pay.href=l||"#pricing"; if(l){pay.target="_blank";pay.rel="noopener";}else pay.removeAttribute("target");
       pay.onclick=l?null:function(e){e.preventDefault();toast(india?"UPI checkout (Razorpay) opens here once the link is added":"Card / PayPal checkout opens here once the link is added");};}
