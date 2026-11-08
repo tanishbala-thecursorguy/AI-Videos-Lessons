@@ -514,4 +514,25 @@ footer .disc{max-width:860px}
   fetch("site.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j){for(var k in j)cfg[k]=j[k];apply();}}).catch(function(){});
 })();
 </script>
+<script>
+/* Slop Money analytics: page views and button clicks, tagged with which page sent the visitor */
+(function(){
+  var U="https://spwtkdgpgeutrhwcjrpy.supabase.co/rest/v1/site_events",K="sb_publishable_IInNrDBLK3dINHSyWaUDzg_UWF63j0B";
+  var q=new URLSearchParams(location.search),ss={};try{ss=sessionStorage;}catch(e){}
+  var src=(q.get("src")||q.get("utm_source")||"").toLowerCase().replace(/[^a-z0-9._-]/g,"").slice(0,80);
+  var ref="";try{ref=document.referrer?new URL(document.referrer).hostname:"";}catch(e){}
+  if(!src){try{src=ss.slm_src||"";}catch(e){}}
+  if(!src){src=/instagram/.test(ref)?"instagram-unknown":/youtube|youtu\.be/.test(ref)?"youtube-unknown":/facebook|fb\./.test(ref)?"facebook":ref?ref.replace(/^www\./,"").slice(0,60):"direct";}
+  try{ss.slm_src=src;}catch(e){}
+  var sid="";try{sid=ss.slm_sid||(ss.slm_sid=Math.random().toString(36).slice(2,12));}catch(e){sid=Math.random().toString(36).slice(2,12);}
+  var dev=/Mobi|Android|iPhone/i.test(navigator.userAgent)?"mobile":"desktop";
+  function send(type,extra){try{var b=JSON.stringify(Object.assign({type:type,src:src,referrer:ref.slice(0,200),path:location.pathname.slice(0,200),device:dev,session:sid},extra||{}));
+    fetch(U,{method:"POST",keepalive:true,headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json","Prefer":"return=minimal"},body:b});}catch(e){}}
+  send("view");
+  document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest(".js-buy,#coPay,.buybar a");if(!t)return;
+    var c=(document.getElementById("coC")||{}).value||"";
+    if(t.id==="coPay")send("pay_click",{country:c});else send("buy_click");},true);
+  document.addEventListener("change",function(e){if(e.target&&e.target.id==="coC")send("country",{country:e.target.value});},true);
+})();
+</script>
 </body></html>
